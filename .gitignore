@@ -1,0 +1,6 @@
+# Ignore node_modules in the client directory
+web/node_modules
+
+# Ignore other common files and directories
+/node_modules
+.DS_Store
