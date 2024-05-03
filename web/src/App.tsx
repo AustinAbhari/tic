@@ -59,6 +59,7 @@ export default App;
  - React fund
  - learn typescript
  - using the MVC
+ - add db
  - Work on css
  - add cool stuff
    - Websockets
