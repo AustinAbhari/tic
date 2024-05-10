@@ -1,11 +1,22 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Game = object;
+interface Game {
+    gameName: string;
+    board: string[][];
+}
 
-const GameContext = createContext<Game>({});
+type Games = Game[];
+
+interface GameContextType {
+    games: Games;
+}
+
+const GameContext = createContext<GameContextType>({
+    games: [],
+});
 
 export const GameProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-    const [games, setGames] = useState<Game>({})
+    const [games, setGames] = useState<Games>([])
 
     useEffect(() => {
         fetchGames();
@@ -25,11 +36,11 @@ export const GameProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
     }
 
     return (
-        <GameContext.Provider value={games}>
+        <GameContext.Provider value={{ games }}>
             {children}
         </GameContext.Provider>
     )
 }
 
 
-export const useGameContext = (): Game => useContext(GameContext);
+export const useGameContext = (): GameContextType => useContext(GameContext);

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { StyledContainer, StyledGrid } from './styled-game';
 import Square from '../square';
 import { checkWinner } from '../../util/check-winner';
-
+import { useGameContext } from '../../context/GameProvider';
 
 const Game = () => {
+    const { games } = useGameContext()
     const [xTurn, setXTurn] = useState<boolean>(true)
     const [winner, setWinner] = useState<string | null>(null)
     const [background, setBackground] = useState<string>('hotpink')
@@ -33,6 +34,8 @@ const Game = () => {
         return () => clearInterval(colorInterval);
 
     }, [winner])
+
+    console.log(games)
 
     return (
         <StyledContainer background={background}>
