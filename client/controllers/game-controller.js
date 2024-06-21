@@ -27,7 +27,8 @@ class GameController {
         }
 
         this.model.saveGame(gameName, board);
-        res.status(200).send('Game saved successfully');
+        const games = this.model.getGames()
+        res.status(200).send(games);
     }
 }
 
