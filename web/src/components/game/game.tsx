@@ -5,7 +5,7 @@ import { checkWinner } from '../../util/check-winner';
 import { useGameContext } from '../../context/GameProvider';
 
 const Game = () => {
-    const { games } = useGameContext()
+    const { games, saveGame } = useGameContext()
     const [xTurn, setXTurn] = useState<boolean>(true)
     const [winner, setWinner] = useState<string | null>(null)
     const [background, setBackground] = useState<string>('hotpink')
@@ -14,6 +14,7 @@ const Game = () => {
         ['', '', ''],
         ['', '', '']
     ])
+
     const handleMarker = (index: any) => {
         const tempGrid = [...grid];
         index = index.split('-')
@@ -39,6 +40,10 @@ const Game = () => {
 
     return (
         <StyledContainer background={background}>
+            <div style={{ width: 100, height: 100 }}>
+                <button onClick={() => saveGame('josiah v Donovan', grid)}> SAVE GAME</button>
+                {games.map((game, i) => <h1>{game.gameName}</h1>)}
+            </div>
             {winner !== null && <h1> THE WINNER IS {winner}</h1>}
             <StyledGrid>
                 {

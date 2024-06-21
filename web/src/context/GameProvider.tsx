@@ -9,10 +9,12 @@ type Games = Game[];
 
 interface GameContextType {
     games: Games;
+    saveGame: (gameName: string, board: string[][]) => void;
 }
 
 const GameContext = createContext<GameContextType>({
     games: [],
+    saveGame: () => { }
 });
 
 export const GameProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
@@ -35,8 +37,28 @@ export const GameProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
         }
     }
 
+    const saveGame = async (gameName: string, board: string[][]) => {
+        try {
+            const response = await fetch('http://127.0.0.1:3001/games', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ gameName, board })
+            })
+
+            if (!response.ok) {
+                throw new Error('OHHHH NOOOOOOO');
+            }
+            const data = await response.json();
+            setGames(data)
+        } catch (error) {
+            console.error("THERE BE SUMTING WRONG WITH DAT", error)
+        }
+    }
+
     return (
-        <GameContext.Provider value={{ games }}>
+        <GameContext.Provider value={{ games, saveGame }}>
             {children}
         </GameContext.Provider>
     )
