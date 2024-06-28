@@ -5,7 +5,7 @@ export const StyledContainer = styled.div<StyledContainerProps>`
   width: 100vw;
   background: ${(props) => props.background};
   display: flex;
-  justify-content: center;
+ justify-content: space-between;
   align-items: center;
 `
 
@@ -18,5 +18,5 @@ export const StyledGrid = styled.div`
 `;
 
 interface StyledContainerProps {
-    background: string;
+  background: string;
 }

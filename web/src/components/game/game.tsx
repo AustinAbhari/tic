@@ -3,9 +3,33 @@ import { StyledContainer, StyledGrid } from './styled-game';
 import Square from '../square';
 import { checkWinner } from '../../util/check-winner';
 import { useGameContext } from '../../context/GameProvider';
+import styled from 'styled-components';
+
+const GamesContainer = styled.div`
+    width: 250px;
+    background: black;
+    height: 100vh;
+    h1 {
+        color: white;
+    }
+`
+
+const TicTacToeContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+`
+
+const SaveGameForm = styled.form`
+    display: flex;
+`
 
 const Game = () => {
-    const { games, saveGame } = useGameContext()
+    const { games, saveGame } = useGameContext();;
+    const [showSavedGame, setShowSavedGame] = useState('');
+    const [gameName, setGameName] = useState('');
     const [xTurn, setXTurn] = useState<boolean>(true)
     const [winner, setWinner] = useState<string | null>(null)
     const [background, setBackground] = useState<string>('hotpink')
@@ -24,37 +48,65 @@ const Game = () => {
         setWinner(checkWinner(tempGrid))
     }
 
+    const handleShowSavedGame = async (gameName: string) => {
+        setShowSavedGame(gameName);
+        const newGame = games.find(c => c.gameName === gameName);
+        if (newGame)
+            setGrid(newGame.board)
+    }
+
     useEffect(() => {
         if (winner === null) return;
 
-        const colorInterval = setInterval(() => {
-            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-            setBackground(randomColor);
-        }, 300)
+        // const colorInterval = setInterval(() => {
+        //     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        //     setBackground(randomColor);
+        // }, 300)
 
-        return () => clearInterval(colorInterval);
+        // return () => clearInterval(colorInterval);
 
     }, [winner])
+
+    const handleSaveEvent = (e: any) => {
+        e.preventDefault();
+        saveGame(gameName, grid);
+    }
 
     console.log(games)
 
     return (
         <StyledContainer background={background}>
-            <div style={{ width: 100, height: 100 }}>
-                <button onClick={() => saveGame('josiah v Donovan', grid)}> SAVE GAME</button>
-                {games.map((game, i) => <h1>{game.gameName}</h1>)}
-            </div>
-            {winner !== null && <h1> THE WINNER IS {winner}</h1>}
-            <StyledGrid>
-                {
-                    grid.map((row, rowIndex) => (
-                        row.map((cell, colIndex) => {
-                            const key = `${rowIndex}-${colIndex}`;
-                            return <Square cell={cell} key={key} index={key} handleMarker={handleMarker} />
-                        })
-                    ))
+            <GamesContainer>
+                {games.map((game, i) =>
+                    <h1 key={i}>
+                        <button onClick={() => handleShowSavedGame(game.gameName)}>
+                            {game.gameName}
+                        </button>
+                    </h1>)}
+            </GamesContainer>
+
+            <TicTacToeContainer>
+                {winner !== null &&
+                    <SaveGameForm>
+                        <label>
+                            NAME YOUR GAME
+                            <input type="text" onChange={(e) => setGameName(e.target.value)} />
+                            <button onClick={(e) => handleSaveEvent(e)}>Save</button>
+                        </label>
+                    </SaveGameForm>
+                    // <h1> THE WINNER IS {winner}</h1>
                 }
-            </StyledGrid>
+                <StyledGrid>
+                    {
+                        grid.map((row, rowIndex) => (
+                            row.map((cell, colIndex) => {
+                                const key = `${rowIndex}-${colIndex}`;
+                                return <Square cell={cell} key={key} index={key} handleMarker={handleMarker} />
+                            })
+                        ))
+                    }
+                </StyledGrid>
+            </TicTacToeContainer>
         </StyledContainer>
     );
 }

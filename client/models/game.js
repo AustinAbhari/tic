@@ -1,6 +1,6 @@
 class GameModel {
     constructor() {
-        this.games = [{ gameName: 'austin vs jack', board: [['x', 'o']] }];
+        this.games = [{ gameName: 'austin vs jack', board: [['x', 'o', 'o'], ['x', 'o', 'o'], ['x', 'o', 'o']] }];
     }
 
     getGame(gameName) {
