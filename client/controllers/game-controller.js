@@ -14,8 +14,9 @@ class GameController {
         }
     }
 
-    getGames(req, res) {
-        const games = this.model.getGames();
+    async getGames(req, res) {
+        const games = await this.model.getGames();
+        console.log(games)
         res.status(200).send(games);
     }
 
