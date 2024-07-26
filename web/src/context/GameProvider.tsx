@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface Game {
 	name: string;
-	board: string[][];
+	board: any;
 }
 
 type Games = Game[];

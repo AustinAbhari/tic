@@ -55,7 +55,7 @@ const Game = () => {
 		console.log(newGame);
 		if (newGame)
 			setGrid(
-				newGame.board || [
+				JSON.parse(newGame.board) || [
 					["", "", ""],
 					["", "", ""],
 					["", "", ""],
